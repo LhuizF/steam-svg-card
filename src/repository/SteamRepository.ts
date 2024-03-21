@@ -5,7 +5,11 @@ export class SteamRepository implements ISteamRepository {
   private readonly steamApi = 'https://api.steampowered.com';
   private readonly steamStore = 'http://store.steampowered.com/api';
 
-  constructor(private readonly key: string) {}
+  constructor(private readonly key: string) {
+    if (!key) {
+      throw new Error('Steam API Key is required');
+    }
+  }
 
   async getRecentlyPlayedGames(steamId: string): Promise<IRecentlyGames[]> {
     const url = `${this.steamApi}/IPlayerService/GetRecentlyPlayedGames/v1/?key=${this.key}&steamid=${steamId}`;
