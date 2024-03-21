@@ -8,3 +8,10 @@ export interface IRecentlyGames {
   playtime_mac_forever: number;
   playtime_linux_forever: number;
 }
+
+export interface IGetRecentlyPlayedGames {
+  response: {
+    total_count: number;
+    games: IRecentlyGames[];
+  };
+}
