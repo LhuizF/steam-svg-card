@@ -5,6 +5,7 @@ const app = express();
 const PORT = 3333;
 
 app.get('/steam-games', async (req, res) => {
+  res.setHeader('Content-Type', 'image/svg+xml');
   return await steamGamesController.handle(req, res);
 });
 

@@ -4,6 +4,7 @@ import { ICreateSteamCard } from '../../services/interface/ISteamService';
 
 export class CardSteamController implements IController {
   constructor(private readonly createSteamCard: ICreateSteamCard) {}
+
   async handle(req: Request, res: Response) {
     const { steamId } = req.query;
 
@@ -13,6 +14,6 @@ export class CardSteamController implements IController {
 
     const card = await this.createSteamCard.getCard(steamId);
 
-    return res.status(200).json(card);
+    return res.status(200).send(card);
   }
 }

@@ -14,7 +14,7 @@ export class SteamRepository implements ISteamRepository {
       .then((response) => response.json())
       .then((data: IGetRecentlyPlayedGames) => {
         const games = data.response.games;
-        console.log(data);
+
         return games;
       });
   }
