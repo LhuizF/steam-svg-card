@@ -1,3 +1,3 @@
 export interface ICreateSteamCard {
-  getCard(steamId: string): Promise<any>;
+  getCurrentGameCard(steamId: string): Promise<string>;
 }

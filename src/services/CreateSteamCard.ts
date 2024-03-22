@@ -3,45 +3,33 @@ import { ISteamRepository } from '../repository/interface/ISteamRepository';
 import { ICreateSteamCard } from './interface/ISteamService';
 
 interface IGameDetails extends IRecentlyGames {
-  image: string;
-  imagev2: string;
   totalHours: string;
   totalWeeksHours: string;
 }
 
 export class CreateSteamCard implements ICreateSteamCard {
   constructor(private readonly steamRepository: ISteamRepository) {}
-  async getCard(steamId: string): Promise<any> {
+
+  async getCurrentGameCard(steamId: string): Promise<any> {
     const recentlyGame =
       await this.steamRepository.getRecentlyPlayedGames(steamId);
-    console.log(recentlyGame.length);
-    const games: IGameDetails[] = await Promise.all(
-      recentlyGame.map(async (game) => {
-        const appDetails = await this.steamRepository.getAppDetails(
-          game.appid.toString(),
-        );
 
-        const totalHours = (game.playtime_forever / 60).toFixed(1);
-        const totalWeeksHours = (game.playtime_2weeks / 60).toFixed(1);
+    const [currentGame] = recentlyGame;
 
-        return {
-          ...game,
-          image: appDetails.header_image,
-          imagev2: appDetails.capsule_image,
-          totalHours,
-          totalWeeksHours,
-        };
-      }),
-    );
+    const game: IGameDetails = {
+      ...currentGame,
+      totalHours: (currentGame.playtime_forever / 60).toFixed(1),
+      totalWeeksHours: (currentGame.playtime_2weeks / 60).toFixed(1),
+    };
 
-    return this.renderCard(games[0]);
+    return this.renderCard(game);
   }
 
-  private renderCard(games: IGameDetails) {
+  private renderCard(game: IGameDetails) {
     return `
     <svg width="460" height="215" xmlns="http://www.w3.org/2000/svg">
 
-      <image href="https://cdn.cloudflare.steamstatic.com/steam/apps/${games.appid}/header.jpg" width="100%" height="100%" preserveAspectRatio="none"/>
+      <image href="https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appid}/header.jpg" width="100%" height="100%" preserveAspectRatio="none"/>
 
       <rect x="0" y="0" width="100%" height="215" fill="url(#gradient)" />
 
@@ -60,17 +48,16 @@ export class CreateSteamCard implements ICreateSteamCard {
         </radialGradient>
       </defs>
 
-
       <circle cx="0" cy="0" r="140" fill="url(#gradientTop)" />
 
       <svg font-family='Arial' font-size="16" fill="white" font-weight="600" >
-        <text x="10" y="32" font-size="28">${games.name}</text>
+        <text x="10" y="32" font-size="28">${game.name}</text>
 
         <text x="10" y="162">Horas de jogo últimas 2 semanas</text>
-        <text x="10" y="180">${games.totalWeeksHours}H</text>
+        <text x="10" y="180">${game.totalWeeksHours}H</text>
 
         <text x="340" y="162">Horas de jogo</text>
-        <text x="340" y="180">${games.totalHours}H</text>
+        <text x="340" y="180">${game.totalHours}H</text>
       </svg>
 
     </svg>
