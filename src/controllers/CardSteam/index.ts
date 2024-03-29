@@ -2,13 +2,10 @@ import { Request, Response } from 'express';
 import { ISteamService } from '../../services/interface/ISteamService';
 
 export class CardSteamController {
-  constructor(private readonly steamService: ISteamService) {
-    console.log('steamService', steamService);
-  }
+  constructor(private readonly steamService: ISteamService) {}
 
   async getCurrentGame(req: Request, res: Response) {
-    const { steamId } = req.query;
-    console.log('AUIII', this);
+    const { steamId } = req.params;
 
     if (!steamId || typeof steamId !== 'string') {
       return res.status(404).json({ message: 'SteamId is required' });

@@ -5,7 +5,7 @@ import { steamGamesController } from './controllers';
 const app = express();
 const PORT = 3333;
 
-app.get('/steam-games', (req, rep) =>
+app.get('/steam/:steamId/current-game', (req, rep) =>
   steamGamesController.getCurrentGame(req, rep),
 );
 
