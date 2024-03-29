@@ -5,7 +5,9 @@ import { steamGamesController } from './controllers';
 const app = express();
 const PORT = 3333;
 
-app.get('/steam-games', steamGamesController.getCurrentGame);
+app.get('/steam-games', (req, rep) =>
+  steamGamesController.getCurrentGame(req, rep),
+);
 
 app.get('/ping', (req, res) => {
   return res.status(200).json({ message: 'pong' });
