@@ -1,7 +1,7 @@
 import { CardSteamController } from './CardSteam';
-import { CreateSteamCard } from '../services';
+import { SteamService } from '../services';
 import { SteamRepository } from '../repository';
 
 const steamRepository = new SteamRepository(process.env.STEAM_API_KEY || '');
-const steamService = new CreateSteamCard(steamRepository);
+const steamService = new SteamService(steamRepository);
 export const steamGamesController = new CardSteamController(steamService);

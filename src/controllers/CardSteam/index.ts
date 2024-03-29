@@ -1,17 +1,20 @@
 import { Request, Response } from 'express';
-import { ICreateSteamCard } from '../../services/interface/ISteamService';
+import { ISteamService } from '../../services/interface/ISteamService';
 
 export class CardSteamController {
-  constructor(private readonly createSteamCard: ICreateSteamCard) {}
+  constructor(private readonly steamService: ISteamService) {
+    console.log('steamService', steamService);
+  }
 
   async getCurrentGame(req: Request, res: Response) {
     const { steamId } = req.query;
+    console.log('AUIII', this);
 
     if (!steamId || typeof steamId !== 'string') {
       return res.status(404).json({ message: 'SteamId is required' });
     }
 
-    const card = await this.createSteamCard.getCurrentGameCard(steamId);
+    const card = await this.steamService.getCurrentGameCard(steamId);
 
     res.setHeader('Content-Type', 'image/svg+xml');
 

@@ -1,13 +1,13 @@
 import { IRecentlyGames } from '../@types';
 import { ISteamRepository } from '../repository/interface/ISteamRepository';
-import { ICreateSteamCard } from './interface/ISteamService';
+import { ISteamService } from './interface/ISteamService';
 
 interface IGameDetails extends IRecentlyGames {
   totalHours: string;
   totalWeeksHours: string;
 }
 
-export class CreateSteamCard implements ICreateSteamCard {
+export class SteamService implements ISteamService {
   constructor(private readonly steamRepository: ISteamRepository) {}
 
   async getCurrentGameCard(steamId: string): Promise<any> {
