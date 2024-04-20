@@ -1,4 +1,5 @@
 import { IRecentlyGames } from '../@types';
+import { BadRequestError } from '../errors/BadRequest';
 import { ISteamRepository } from '../repository/interface/ISteamRepository';
 import { ISteamService } from './interface/ISteamService';
 
@@ -13,6 +14,10 @@ export class SteamService implements ISteamService {
   async getCurrentGameCard(steamId: string): Promise<any> {
     const recentlyGame =
       await this.steamRepository.getRecentlyPlayedGames(steamId);
+
+    if (!recentlyGame || recentlyGame.length === 0) {
+      throw new BadRequestError('No games found', 404);
+    }
 
     const [currentGame] = recentlyGame;
 
