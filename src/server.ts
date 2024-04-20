@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { steamGamesController } from './controllers';
 import { BadRequestError } from './errors/BadRequest';
 
@@ -14,7 +14,7 @@ app.get('/ping', (req, res) => {
   return res.status(200).json({ message: 'pong' });
 });
 
-app.use((err: any, req: Request, res: Response) => {
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof BadRequestError) {
     return res.status(err.statusCode).json({
       message: err.message,
